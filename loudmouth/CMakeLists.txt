@@ -3,7 +3,8 @@
 # /loudmouth/CMakeLists.txt
 
 
-EXECUTE_PROCESS(COMMAND "C:\telepathy-win32-build\bin\glib-genmarshal.exe" "--header" "--prefix=_lm_marshal" 
+FIND_PROGRAM(MKENUM glib-genmarshal ${GLIB_RUNTIME}) 
+EXECUTE_PROCESS(COMMAND ${MKENUM} "--header" "--prefix=_lm_marshal" 
 	INPUT_FILE ${CMAKE_SOURCE_DIR}/loudmouth/lm-marshal.list
 	OUTPUT_FILE ${CMAKE_SOURCE_DIR}/loudmouth/lm-marshal.h
 	)
