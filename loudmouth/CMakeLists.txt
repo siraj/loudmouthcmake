@@ -3,6 +3,11 @@
 # /loudmouth/CMakeLists.txt
 
 
+EXECUTE_PROCESS(COMMAND "C:\telepathy-win32-build\bin\glib-genmarshal.exe" "--header" "--prefix=_lm_marshal" 
+	INPUT_FILE ${CMAKE_SOURCE_DIR}/loudmouth/lm-marshal.list
+	OUTPUT_FILE ${CMAKE_SOURCE_DIR}/loudmouth/lm-marshal.h
+	)
+
 # Define the source files
 # =======================
 file(GLOB source_files_for_loudmouth "${CMAKE_SOURCE_DIR}/loudmouth/*.c")
@@ -19,13 +24,15 @@ file(GLOB source_files_for_loudmouth "${CMAKE_SOURCE_DIR}/loudmouth/*.c")
 SET (loudmouthsrc 	
 	             md5.c
 	             lm-proxy.c  
+		     lm-socket.c
+
 	)
 
 
 # Define include dirs
 # ===================
 set(LOUDMOUTH_INCLUDE_DIR ${CMAKE_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/loudmouth)
-include_directories(${LOUDMOUTH_INCLUDE_DIR} ${GLIB_INCLUDE_DIR} ${OPENSSL_INCLUDE_DIR})
+include_directories(${LOUDMOUTH_INCLUDE_DIR} ${GLIBWIN32_INCLUDE_DIR} ${OPENSSL_INCLUDE_DIR})
 
 # Define link dirs
 # ================
@@ -37,5 +44,5 @@ add_library(loudmouth ${loudmouthsrc})
 #set_target_properties(loudmouth PROPERTIES ${VERSION}) 
 set_target_properties(loudmouth PROPERTIES PROJECT_LABEL "Loudmouth")
 set_target_properties(loudmouth PROPERTIES LIBRARY_OUTPUT_DIRECTORY "bin")
-target_link_libraries(loudmouth ${GLIB_LIBRARIES} ${OPENSLL_LIBRARIES})
+target_link_libraries(loudmouth ${GLIBWIN32_LIBRARIES} ${OPENSLL_LIBRARIES})
 add_definitions(-DLM_COMPILATION)
