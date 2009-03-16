@@ -23,12 +23,12 @@ file(GLOB source_files_for_loudmouth "${CMAKE_SOURCE_DIR}/loudmouth/*.c")
 #list(REMOVE_ITEM source_files_for_loudmouth "${CMAKE_SOURCE_DIR}/loudmouth/lm-asyncns-resolver.c")
 #list(REMOVE_ITEM source_files_for_loudmouth "${CMAKE_SOURCE_DIR}/loudmouth/asyncns.c")
 SET (loudmouthsrc 	
-	             md5.c
-	             lm-proxy.c  
-		     lm-socket.c
-		     lm-parser.c
-
-	)
+	         md5.c
+	         lm-proxy.c  
+		 lm-socket.c
+		 lm-parser.c
+		 lm-sasl.c
+		 lm-message.c)
 
 
 # Define include dirs
