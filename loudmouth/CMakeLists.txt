@@ -26,6 +26,7 @@ SET (loudmouthsrc
 	             md5.c
 	             lm-proxy.c  
 		     lm-socket.c
+		     lm-parser.c
 
 	)
 
