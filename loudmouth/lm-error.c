@@ -1,4 +1,4 @@
-/* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
+/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
  * Copyright (C) 2003 Imendio AB
  *
@@ -18,24 +18,25 @@
  * Boston, MA 02111-1307, USA.
  */
 
-/**
- * SECTION:lm-error
- * @Title: LmError
- * @Short_description: Error reporting.
- */
-
 #include <config.h>
 #include <glib/gerror.h>
 #include "lm-error.h"
 
+/**
+ * lm_error_quark:
+ *
+ * Returns the Loudmouth #GError domain quark.
+ * 
+ * Return value: The Loudmouth domain quark used by #GError.
+ */
 GQuark
 lm_error_quark (void)
 {
-    static GQuark q = 0;
+	static GQuark q = 0;
 
-    if (q == 0) {
-        q = g_quark_from_static_string ("lm-error-quark");
-    }
-    
-    return q;
+	if (q == 0) {
+		q = g_quark_from_static_string ("lm-error-quark");
+	}
+	
+	return q;
 }

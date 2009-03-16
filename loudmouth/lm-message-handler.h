@@ -1,4 +1,4 @@
-/* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
+/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
  * Copyright (C) 2003 Imendio AB
  *
@@ -29,25 +29,14 @@
 
 G_BEGIN_DECLS
 
-/**
- * LmHandleMessageFunction:
- * @handler: an #LmMessageHandler
- * @connection: an #LmConnection
- * @message: an #LmMessage
- * @user_data: user data set when creating the handler
- * 
- * The actual callback function in an #LmMessageHandler. This function is called when an incoming message arrives that haven't been handled by an handler with higher priority.
- * 
- * Returns: #LM_HANDLER_RESULT_REMOVE_MESSAGE to indicate that message has been handled, otherwise #LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS.
- */
 typedef LmHandlerResult (* LmHandleMessageFunction) (LmMessageHandler *handler,
-                                                     LmConnection     *connection,
-                                                     LmMessage        *message,
-                                                     gpointer          user_data);
+						     LmConnection     *connection,
+						     LmMessage        *message,
+						     gpointer          user_data);
 
 LmMessageHandler *lm_message_handler_new   (LmHandleMessageFunction  function,
-                                            gpointer                 user_data,
-                                            GDestroyNotify           notify);
+					    gpointer                 user_data,
+					    GDestroyNotify           notify);
 void              lm_message_handler_invalidate (LmMessageHandler   *handler);
 gboolean          lm_message_handler_is_valid   (LmMessageHandler   *handler);
 LmMessageHandler *lm_message_handler_ref   (LmMessageHandler        *handler);

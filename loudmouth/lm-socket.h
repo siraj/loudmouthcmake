@@ -1,6 +1,6 @@
-/* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
+/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
- * Copyright (C) 2008 Imendio AB
+ * Copyright (C) 2006 Imendio AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License as
@@ -18,63 +18,60 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __LM_SOCKET_H__
+#ifndef __LM_SOCKET_H__ 
 #define __LM_SOCKET_H__
 
-#include <glib-object.h>
+#include <glib.h>
 
-#include "lm-message.h"
 #include "lm-internals.h"
 
-G_BEGIN_DECLS
+typedef struct _LmSocket LmSocket;
 
-#define LM_TYPE_SOCKET             (lm_socket_get_type())
-#define LM_SOCKET(o)               (G_TYPE_CHECK_INSTANCE_CAST((o), LM_TYPE_SOCKET, LmSocket))
-#define LM_IS_SOCKET(o)            (G_TYPE_CHECK_INSTANCE_TYPE((o), LM_TYPE_SOCKET))
-#define LM_SOCKET_GET_IFACE(o)     (G_TYPE_INSTANCE_GET_INTERFACE((o), LM_TYPE_SOCKET, LmSocketIface))
+typedef void    (* IncomingDataFunc)  (LmSocket       *socket,
+				       const gchar    *buf,
+				       gpointer        user_data);
 
-typedef struct _LmSocket      LmSocket;
-typedef struct _LmSocketIface LmSocketIface;
+typedef void    (* SocketClosedFunc)  (LmSocket       *socket,
+				       LmDisconnectReason reason,
+				       gpointer        user_data);
 
-struct _LmSocketIface {
-    GTypeInterface parent;
+typedef void    (* ConnectResultFunc) (LmSocket        *socket,
+				       gboolean         result,
+				       gpointer         user_data);
 
-    /* <vtable> */
-    void     (*connect)      (LmSocket *socket);
-    gboolean (*write)        (LmSocket *socket,
-                              gchar    *buf,
-                              gsize     len);
-    gboolean (*read)         (LmSocket *socket,
-                              gchar    *buf,
-                              gsize     buf_len,
-                              gsize    *read_len);
-    void     (*disconnect)   (LmSocket *socket);
-};
+gboolean  lm_socket_output_is_buffered    (LmSocket       *socket,
+					   const gchar    *buffer,
+					   gint            len);
+void      lm_socket_setup_output_buffer   (LmSocket       *socket,
+					   const gchar    *buffer,
+					   gint            len);
+gint      lm_socket_do_write              (LmSocket       *socket,
+					   const gchar    *buf,
+					   gint            len);
 
-typedef void  (*LmSocketCallback)  (LmSocket *socket,
-                                    guint     status_code,
-                                    gpointer  user_data);
-
-GType          lm_socket_get_type          (void);
-
-LmSocket *     lm_socket_new               (const gchar *host,
-                                            guint        port);
-/* Use DNS lookup to find the port and the host */
-LmSocket *     lm_socket_new_to_service    (const gchar *service);
-
-/* All async functions so doesn't make a lot of sense to return anything */
-/* Use LmSocketCallback instead of signal for the connect result */
-void           lm_socket_connect           (LmSocket    *socket);
-gboolean       lm_socket_write             (LmSocket    *socket,
-                                            gchar       *buf,
-                                            gsize        len);
-gboolean       lm_socket_read              (LmSocket    *socket,
-                                            gchar       *buf,
-                                            gsize        buf_len,
-                                            gsize       *read_len);
-void           lm_socket_disconnect        (LmSocket    *socket);
-
-G_END_DECLS
+LmSocket *  lm_socket_create              (GMainContext   *context, 
+					   IncomingDataFunc data_func,
+					   SocketClosedFunc closed_func,
+					   ConnectResultFunc connect_func,
+					   gpointer         user_data,
+					   LmConnection   *connection,
+					   gboolean        blocking,
+					   const gchar    *server, 
+					   const gchar    *domain,
+					   guint           port, 
+					   LmSSL          *ssl,
+					   LmProxy        *proxy,
+					   GError        **error);
+void        lm_socket_flush               (LmSocket       *socket);
+void        lm_socket_close               (LmSocket       *socket);
+LmSocket *  lm_socket_ref                 (LmSocket       *socket);
+void        lm_socket_unref               (LmSocket       *socket);
+#ifdef HAVE_ASYNCNS
+void	    _asyncns_cancel               (LmSocket *socket);
+#endif
+gboolean    lm_socket_starttls            (LmSocket *socket);
+gboolean    lm_socket_set_keepalive       (LmSocket *socket, int delay);
+gchar *     lm_socket_get_local_host      (LmSocket *socket);
 
 #endif /* __LM_SOCKET_H__ */
 

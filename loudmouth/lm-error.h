@@ -1,4 +1,4 @@
-/* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
+/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
  * Copyright (C) 2003 Imendio AB
  *
@@ -29,26 +29,13 @@
 
 G_BEGIN_DECLS
 
-/**
- * LM_ERROR:
- * 
- * Macro for getting the error quark.
- */
 #define LM_ERROR lm_error_quark ()
 
-/**
- * LmError:
- * @LM_ERROR_CONNECTION_NOT_OPEN: Connection not open when trying to send a message
- * @LM_ERROR_CONNECTION_OPEN: Connection is already open when trying to open it again.
- * @LM_ERROR_AUTH_FAILED: Authentication failed while opening connection
- * @LM_ERROR_CONNECTION_FAILED:  * 
- * Describes the problem of the error.
- */
 typedef enum {
-    LM_ERROR_CONNECTION_NOT_OPEN,
-    LM_ERROR_CONNECTION_OPEN,
-    LM_ERROR_AUTH_FAILED,
-    LM_ERROR_CONNECTION_FAILED
+        LM_ERROR_CONNECTION_NOT_OPEN,
+        LM_ERROR_CONNECTION_OPEN,
+        LM_ERROR_AUTH_FAILED,
+	    LM_ERROR_CONNECTION_FAILED
 } LmError;
 
 GQuark lm_error_quark (void) G_GNUC_CONST;

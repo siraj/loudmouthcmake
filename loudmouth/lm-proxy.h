@@ -1,4 +1,4 @@
-/* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
+/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
  * Copyright (C) 2004 Imendio AB
  *
@@ -26,49 +26,37 @@
 
 G_BEGIN_DECLS
 
-/**
- * LmProxy:
- * 
- * This should not be accessed directly. Use the accessor functions as described below.
- */
 typedef struct _LmProxy LmProxy;
 
-/**
- * LmProxyType:
- * @LM_PROXY_TYPE_NONE: Unused
- * @LM_PROXY_TYPE_HTTP: An HTTP proxy.
- * 
- * The type of the proxy.
- */
 typedef enum {
-    LM_PROXY_TYPE_NONE = 0,
-    LM_PROXY_TYPE_HTTP
+	LM_PROXY_TYPE_NONE = 0,
+	LM_PROXY_TYPE_HTTP
 } LmProxyType;
 
 LmProxy *     lm_proxy_new              (LmProxyType         type);
 LmProxy *     lm_proxy_new_with_server  (LmProxyType         type,
-                                         const gchar        *server,
-                                         guint               port);
+					 const gchar        *server,
+					 guint               port);
 
 LmProxyType   lm_proxy_get_type         (LmProxy            *proxy);
 void          lm_proxy_set_type         (LmProxy            *proxy,
-                                         LmProxyType         type);
+					 LmProxyType         type);
 
 const gchar * lm_proxy_get_server       (LmProxy            *proxy);
 void          lm_proxy_set_server       (LmProxy            *proxy,
-                                         const gchar        *server);
+					 const gchar        *server);
 
 guint         lm_proxy_get_port         (LmProxy            *proxy);
 void          lm_proxy_set_port         (LmProxy            *proxy,
-                                         guint               port);
+					 guint               port);
 
 const gchar * lm_proxy_get_username     (LmProxy            *proxy);
 void          lm_proxy_set_username     (LmProxy            *proxy,
-                                         const gchar        *username);
+					 const gchar        *username);
 
 const gchar * lm_proxy_get_password     (LmProxy            *proxy);
 void          lm_proxy_set_password     (LmProxy            *proxy,
-                                         const gchar        *password);
+					 const gchar        *password);
 
 LmProxy *     lm_proxy_ref              (LmProxy            *proxy);
 void          lm_proxy_unref            (LmProxy            *proxy);

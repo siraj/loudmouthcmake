@@ -1,4 +1,4 @@
-/* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
+/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
  * Copyright (C) 2003 Imendio AB
  *
@@ -27,14 +27,14 @@
 typedef struct LmParser LmParser;
 
 typedef void (* LmParserMessageFunction) (LmParser     *parser,
-                                          LmMessage    *message,
-                                          gpointer      user_data);
+					  LmMessage    *message,
+					  gpointer      user_data);
 
 LmParser *   lm_parser_new       (LmParserMessageFunction  function,
-                                  gpointer                 user_data,
-                                  GDestroyNotify           notify);
-gboolean     lm_parser_parse     (LmParser                *parser,
-                                  const gchar             *string);
+				  gpointer                 user_data,
+				  GDestroyNotify           notify);
+void         lm_parser_parse     (LmParser                *parser,
+				  const gchar             *string);
 void         lm_parser_free      (LmParser                *parser);
 
 #endif /* __LM_PARSER_H__ */

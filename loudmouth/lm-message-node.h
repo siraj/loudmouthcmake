@@ -1,4 +1,4 @@
-/* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
+/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
  * Copyright (C) 2003 Imendio AB
  *
@@ -29,56 +29,44 @@
 
 G_BEGIN_DECLS
 
-/**
- * LmMessageNode:
- * @name: the name of the node
- * @value: value of the node, can be NULL
- * @raw_mode: if true, don't escape the content of the message. The content must be valid XML.
- * @next: next sibling
- * @prev: previous sibling
- * @parent: node parent
- * @children: pointing to first child
- * 
- * A struct representing a node in a message. 
- */
 typedef struct _LmMessageNode LmMessageNode;
 
 struct _LmMessageNode {
-    gchar      *name;
-    gchar      *value;
-    gboolean    raw_mode;
+	gchar      *name;
+	gchar      *value;
+	gboolean    raw_mode;
 
-    LmMessageNode     *next;
-    LmMessageNode     *prev;
-    LmMessageNode     *parent;
-    LmMessageNode     *children;
+        LmMessageNode     *next;
+        LmMessageNode     *prev;
+	LmMessageNode     *parent;
+        LmMessageNode     *children;
 
-    /* < private > */
-    GSList     *attributes;
-    gint        ref_count;
+	/* < private > */
+	GSList     *attributes;
+	gint        ref_count;
 };
 
 const gchar *  lm_message_node_get_value      (LmMessageNode *node);
 void           lm_message_node_set_value      (LmMessageNode *node,
-                                               const gchar   *value);
+					       const gchar   *value);
 LmMessageNode *lm_message_node_add_child      (LmMessageNode *node,
-                                               const gchar   *name,
-                                               const gchar   *value);
+					       const gchar   *name,
+					       const gchar   *value);
 void           lm_message_node_set_attributes (LmMessageNode *node,
-                                               const gchar   *name,
-                                               ...);
+					       const gchar   *name,
+					       ...);
 void           lm_message_node_set_attribute  (LmMessageNode *node,
-                                               const gchar   *name,
-                                               const gchar   *value);
+					       const gchar   *name,
+					       const gchar   *value);
 const gchar *  lm_message_node_get_attribute  (LmMessageNode *node,
-                                               const gchar   *name);
+					       const gchar   *name);
 LmMessageNode *lm_message_node_get_child      (LmMessageNode *node,
-                                               const gchar   *child_name);
+					       const gchar   *child_name);
 LmMessageNode *lm_message_node_find_child     (LmMessageNode *node,
-                                               const gchar   *child_name);
+					       const gchar   *child_name);
 gboolean       lm_message_node_get_raw_mode   (LmMessageNode *node);
 void           lm_message_node_set_raw_mode   (LmMessageNode *node,
-                                               gboolean       raw_mode);
+					       gboolean       raw_mode);
 LmMessageNode *lm_message_node_ref            (LmMessageNode *node);
 void           lm_message_node_unref          (LmMessageNode *node);
 gchar *        lm_message_node_to_string      (LmMessageNode *node);

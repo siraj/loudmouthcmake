@@ -1,4 +1,4 @@
-/* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
+/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
  * Copyright (C) 2006 Imendio AB
  *
@@ -27,20 +27,20 @@
 typedef struct _LmMessageQueue LmMessageQueue;
 
 typedef void (* LmMessageQueueCallback) (LmMessageQueue *queue,
-                                         gpointer        user_data);
+					 gpointer        user_data);
 
 LmMessageQueue *  lm_message_queue_new         (LmMessageQueueCallback func,
-                                                gpointer               data);
+						gpointer               data);
 void              lm_message_queue_attach      (LmMessageQueue        *queue,
-                                                GMainContext *context);
+						GMainContext *context);
 
 void              lm_message_queue_detach      (LmMessageQueue *queue);
 void              lm_message_queue_push_tail   (LmMessageQueue *queue,
-                                                LmMessage      *m);
+						LmMessage      *m);
 LmMessage *       lm_message_queue_peek_nth    (LmMessageQueue *queue,
-                                                guint           n);
+						guint           n);
 LmMessage *       lm_message_queue_pop_nth     (LmMessageQueue *queue,
-                                                guint           n);
+						guint           n);
 guint             lm_message_queue_get_length  (LmMessageQueue *queue);
 gboolean          lm_message_queue_is_empty    (LmMessageQueue *queue);
 

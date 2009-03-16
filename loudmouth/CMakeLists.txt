@@ -33,7 +33,19 @@ SET (loudmouthsrc
 		 lm-debug.c 
 		 lm-connection.c
 		 lm-ssl-openssl.c 
-		 lm-old-socket.c)
+		 base64.c
+		 lm-error.c
+		 lm-message-handler.c
+		 lm-message-node.c
+		 lm-message-queue.c
+		 lm-message.c
+		 lm-sha.c
+		 lm-ssl-base.c
+		 lm-ssl-generic.c
+		 lm-utils.c
+		 lm-misc.c
+		 lm-ssl-gnutls.c
+		 )
 
 
 # Define include dirs

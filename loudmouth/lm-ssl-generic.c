@@ -1,4 +1,4 @@
-/* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
+/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
  * Copyright (C) 2003-2006 Imendio AB
  *
@@ -26,10 +26,10 @@
 
 LmSSLResponse  
 _lm_ssl_func_always_continue (LmSSL       *ssl,
-                              LmSSLStatus  status,
-                              gpointer     user_data)
+			      LmSSLStatus  status,
+			      gpointer     user_data)
 {
-    return LM_SSL_RESPONSE_CONTINUE;;
+	return LM_SSL_RESPONSE_CONTINUE;;
 }
 
 /* Define the SSL functions as noops if we compile without support */
@@ -37,56 +37,56 @@ _lm_ssl_func_always_continue (LmSSL       *ssl,
 
 LmSSL *
 _lm_ssl_new (const gchar    *expected_fingerprint,
-             LmSSLFunction   ssl_function,
-             gpointer        user_data,
-             GDestroyNotify  notify)
+	     LmSSLFunction   ssl_function,
+	     gpointer        user_data,
+	     GDestroyNotify  notify)
 {
-    return NULL;
+	return NULL;
 }
 
 void
 _lm_ssl_initialize (LmSSL *ssl)
 {
-    /* NOOP */
+	/* NOOP */
 }
 
 gboolean
 _lm_ssl_begin (LmSSL        *ssl,
-               gint          fd,
-               const gchar  *server,
-               GError      **error)
+	       gint          fd,
+	       const gchar  *server,
+	       GError      **error)
 {
-    return TRUE;
+	return TRUE;
 }
 
 GIOStatus
 _lm_ssl_read (LmSSL *ssl,
-              gchar *buf,
-              gint   len,
-              gsize  *bytes_read)
+	      gchar *buf,
+	      gint   len,
+	      gsize  *bytes_read)
 {
-    /* NOOP */
-    *bytes_read = 0;
+	/* NOOP */
+	*bytes_read = 0;
 
-    return G_IO_STATUS_EOF;
+	return G_IO_STATUS_EOF;
 }
 
 gboolean 
 _lm_ssl_send (LmSSL *ssl, const gchar *str, gint len)
 {
-    /* NOOP */
-    return TRUE;
+	/* NOOP */
+	return TRUE;
 }
 void 
 _lm_ssl_close (LmSSL *ssl)
 {
-    /* NOOP */
+	/* NOOP */
 }
 
 void
 _lm_ssl_free (LmSSL *ssl)
 {
-    /* NOOP */
+	/* NOOP */
 }
 
 #endif /* HAVE_SSL */
@@ -106,15 +106,15 @@ _lm_ssl_free (LmSSL *ssl)
  **/
 LmSSL *
 lm_ssl_new (const gchar    *expected_fingerprint,
-            LmSSLFunction   ssl_function,
-            gpointer        user_data,
-            GDestroyNotify  notify)
+	    LmSSLFunction   ssl_function,
+	    gpointer        user_data,
+	    GDestroyNotify  notify)
 {
-    /* The implementation of this function will be different depending
-     * on which implementation is used 
-     */
-    return _lm_ssl_new (expected_fingerprint,
-                        ssl_function, user_data, notify);
+	/* The implementation of this function will be different depending
+	 * on which implementation is used 
+	 */
+	return _lm_ssl_new (expected_fingerprint,
+			    ssl_function, user_data, notify);
 }
 
 /**
@@ -128,9 +128,9 @@ gboolean
 lm_ssl_is_supported (void)
 {
 #ifdef HAVE_SSL
-    return TRUE;
+	return TRUE;
 #else
-    return FALSE;
+	return FALSE;
 #endif
 }
 
@@ -146,9 +146,9 @@ lm_ssl_is_supported (void)
 const gchar *
 lm_ssl_get_fingerprint (LmSSL *ssl)
 {
-    g_return_val_if_fail (ssl != NULL, NULL);
-    
-    return LM_SSL_BASE(ssl)->fingerprint;
+	g_return_val_if_fail (ssl != NULL, NULL);
+	
+	return LM_SSL_BASE(ssl)->fingerprint;
 }
 
 /**
@@ -162,57 +162,65 @@ lm_ssl_get_fingerprint (LmSSL *ssl)
 LmSSL *
 lm_ssl_ref (LmSSL *ssl)
 {
-    g_return_val_if_fail (ssl != NULL, NULL);
+	g_return_val_if_fail (ssl != NULL, NULL);
 
-    LM_SSL_BASE(ssl)->ref_count++;
+	LM_SSL_BASE(ssl)->ref_count++;
 
-    return ssl;
+	return ssl;
 }
 
 /**
  * lm_ssl_use_starttls:
  * @ssl: an #LmSSL
+ * @use_starttls: #TRUE if STARTTLS should be used.
+ * @require_starttls: #TRUE if STARTTLS should be required.
  *
  * Set whether STARTTLS should be used.
  **/
 void
 lm_ssl_use_starttls (LmSSL *ssl,
-                     gboolean use_starttls,
-                     gboolean require_starttls)
+		     gboolean use_starttls,
+		     gboolean require_starttls)
 {
-    LmSSLBase *base;
+	LmSSLBase *base;
 
-    base = LM_SSL_BASE (ssl);
-    base->use_starttls = use_starttls;
-    base->require_starttls = require_starttls;
+	base = LM_SSL_BASE (ssl);
+	base->use_starttls = use_starttls;
+	base->require_starttls = require_starttls;
 }
 
 /**
  * lm_ssl_get_use_starttls:
+ * @ssl: an #LmSSL
  *
- * Return value: TRUE is @ssl is configured to use STARTTLS.
+ * Fetches whether STARTTLS is used.
+ *
+ * Return value: #TRUE is @ssl is configured to use STARTTLS.
  **/
 gboolean
 lm_ssl_get_use_starttls (LmSSL *ssl)
 {
-    LmSSLBase *base;
+	LmSSLBase *base;
 
-    base = LM_SSL_BASE (ssl);
-    return base->use_starttls;
+	base = LM_SSL_BASE (ssl);
+	return base->use_starttls;
 }
 
 /**
  * lm_ssl_get_require_starttls:
+ * @ssl: an #LmSSL
  *
- * Return value: TRUE if @ssl requires that STARTTLS succeed.
+ * Fetches whether STARTTLS is required.
+ *
+ * Return value: #TRUE if @ssl requires that STARTTLS succeed.
  **/
 gboolean
 lm_ssl_get_require_starttls (LmSSL *ssl)
 {
-    LmSSLBase *base;
+	LmSSLBase *base;
 
-    base = LM_SSL_BASE (ssl);
-    return base->require_starttls;
+	base = LM_SSL_BASE (ssl);
+	return base->require_starttls;
 }
 
 /**
@@ -225,21 +233,21 @@ lm_ssl_get_require_starttls (LmSSL *ssl)
 void 
 lm_ssl_unref (LmSSL *ssl)
 {
-    LmSSLBase *base;
-    
-    g_return_if_fail (ssl != NULL);
+	LmSSLBase *base;
+	
+	g_return_if_fail (ssl != NULL);
         
-    base = LM_SSL_BASE (ssl);
+	base = LM_SSL_BASE (ssl);
 
-    base->ref_count --;
+	base->ref_count --;
         
-    if (base->ref_count == 0) {
-        if (base->data_notify) {
-            (* base->data_notify) (base->func_data);
-        }
+        if (base->ref_count == 0) {
+		if (base->data_notify) {
+			(* base->data_notify) (base->func_data);
+		}
              
-        _lm_ssl_free (ssl);
-    }
+		_lm_ssl_free (ssl);
+        }
 }
 
 

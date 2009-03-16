@@ -1,4 +1,4 @@
-/* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
+/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
  * Copyright (C) 2003 Imendio AB
  *
@@ -18,12 +18,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-/**
- * SECTION:lm-message-node
- * @Title: LmMessageNode
- * @Short_description: A node in the message tree
- */
-
 #include <config.h>
 #include <string.h>
 
@@ -31,8 +25,8 @@
 #include "lm-message-node.h"
 
 typedef struct {
-    gchar *key;
-    gchar *value;
+        gchar *key;
+        gchar *value;
 } KeyValuePair;
 
 static void            message_node_free            (LmMessageNode    *node);
@@ -41,91 +35,91 @@ static LmMessageNode * message_node_last_child      (LmMessageNode    *node);
 static void
 message_node_free (LmMessageNode *node)
 {
-    LmMessageNode *l;
-    GSList        *list;
+        LmMessageNode *l;
+        GSList        *list;
         
-    g_return_if_fail (node != NULL);
+        g_return_if_fail (node != NULL);
 
-    for (l = node->children; l;) {
-        LmMessageNode *next = l->next;
+	for (l = node->children; l;) {
+		LmMessageNode *next = l->next;
 
-        lm_message_node_unref (l);
-        l = next;
-    }
+		lm_message_node_unref (l);
+		l = next;
+        }
 
-    g_free (node->name);
-    g_free (node->value);
+        g_free (node->name);
+        g_free (node->value);
         
-    for (list = node->attributes; list; list = list->next) {
-        KeyValuePair *kvp = (KeyValuePair *) list->data;
+        for (list = node->attributes; list; list = list->next) {
+                KeyValuePair *kvp = (KeyValuePair *) list->data;
                 
-        g_free (kvp->key);
-        g_free (kvp->value);
-        g_free (kvp);
-    }
+                g_free (kvp->key);
+                g_free (kvp->value);
+                g_free (kvp);
+        }
         
-    g_slist_free (node->attributes);
-    g_free (node);
+        g_slist_free (node->attributes);
+        g_free (node);
 }
 
 static LmMessageNode *
 message_node_last_child (LmMessageNode *node)
 {
-    LmMessageNode *l;
+        LmMessageNode *l;
         
-    g_return_val_if_fail (node != NULL, NULL);
+        g_return_val_if_fail (node != NULL, NULL);
 
-    if (!node->children) {
-        return NULL;
-    }
+        if (!node->children) {
+                return NULL;
+        }
                 
-    l = node->children;
+        l = node->children;
 
-    while (l->next) {
-        l = l->next;
-    }
+        while (l->next) {
+                l = l->next;
+        }
 
-    return l;
+        return l;
 }
 
 LmMessageNode *
 _lm_message_node_new (const gchar *name)
 {
-    LmMessageNode *node;
+        LmMessageNode *node;
 
-    node = g_new0 (LmMessageNode, 1);
+        node = g_new0 (LmMessageNode, 1);
         
-    node->name       = g_strdup (name);
-    node->value      = NULL;
-    node->raw_mode   = FALSE;
-    node->attributes = NULL;
-    node->next       = NULL;
-    node->prev       = NULL;
-    node->parent     = NULL;
-    node->children   = NULL;
+        node->name       = g_strdup (name);
+        node->value      = NULL;
+	node->raw_mode   = FALSE;
+        node->attributes = NULL;
+        node->next       = NULL;
+        node->prev       = NULL;
+        node->parent     = NULL;
+        node->children   = NULL;
 
-    node->ref_count  = 1;
+	node->ref_count  = 1;
 
-    return node;
+        return node;
 }
 void
 _lm_message_node_add_child_node (LmMessageNode *node, LmMessageNode *child)
 {
-    LmMessageNode *prev;
-    
-    g_return_if_fail (node != NULL);
+        LmMessageNode *prev;
+	
+        g_return_if_fail (node != NULL);
 
-    prev = message_node_last_child (node);
-    lm_message_node_ref (child);
+        prev = message_node_last_child (node);
+	lm_message_node_ref (child);
 
-    if (prev) {
-        prev->next    = child;
-        child->prev   = prev;
-    } else {
-        node->children = child;
-    }
+        if (prev) {
+                prev->next    = child;
+                child->prev   = prev;
+        } else {
+                node->children = child;
+        }
         
-    child->parent = node;
+        child->parent = node;
 }
 
 /**
@@ -134,14 +128,14 @@ _lm_message_node_add_child_node (LmMessageNode *node, LmMessageNode *child)
  * 
  * Retrieves the value of @node.
  * 
- * Return value: 
+ * Return value: The value of the node or %NULL.
  **/
 const gchar *
 lm_message_node_get_value (LmMessageNode *node)
 {
-    g_return_val_if_fail (node != NULL, NULL);
-    
-    return node->value;
+	g_return_val_if_fail (node != NULL, NULL);
+	
+	return node->value;
 }
 
 /**
@@ -154,16 +148,16 @@ lm_message_node_get_value (LmMessageNode *node)
 void
 lm_message_node_set_value (LmMessageNode *node, const gchar *value)
 {
-    g_return_if_fail (node != NULL);
+        g_return_if_fail (node != NULL);
        
-    g_free (node->value);
-    
-    if (!value) {
-        node->value = NULL;
-        return;
-    }
+        g_free (node->value);
+	
+        if (!value) {
+                node->value = NULL;
+                return;
+        }
 
-    node->value = g_strdup (value);
+        node->value = g_strdup (value);
 }
 
 /**
@@ -178,21 +172,21 @@ lm_message_node_set_value (LmMessageNode *node, const gchar *value)
  **/
 LmMessageNode *
 lm_message_node_add_child (LmMessageNode *node, 
-                           const gchar   *name, 
-                           const gchar   *value)
+			   const gchar   *name, 
+			   const gchar   *value)
 {
-    LmMessageNode *child;
-    
-    g_return_val_if_fail (node != NULL, NULL);
-    g_return_val_if_fail (name != NULL, NULL);
+	LmMessageNode *child;
+	
+        g_return_val_if_fail (node != NULL, NULL);
+        g_return_val_if_fail (name != NULL, NULL);
 
-    child = _lm_message_node_new (name);
+	child = _lm_message_node_new (name);
 
-    lm_message_node_set_value (child, value);
-    _lm_message_node_add_child_node (node, child);
-    lm_message_node_unref (child);
+	lm_message_node_set_value (child, value);
+	_lm_message_node_add_child_node (node, child);
+	lm_message_node_unref (child);
 
-    return child;
+	return child;
 }
 
 /**
@@ -206,25 +200,25 @@ lm_message_node_add_child (LmMessageNode *node,
  **/
 void
 lm_message_node_set_attributes  (LmMessageNode *node,
-                                 const gchar   *name,
-                                 ...)
+				 const gchar   *name,
+				 ...)
 {
-    va_list args;
-    
-    g_return_if_fail (node != NULL);
+	va_list args;
+	
+        g_return_if_fail (node != NULL);
 
-    for (va_start (args, name); 
-         name; 
-         name = (const gchar *) va_arg (args, gpointer)) {
-        const gchar *value;
+	for (va_start (args, name); 
+	     name; 
+	     name = (const gchar *) va_arg (args, gpointer)) {
+		const gchar *value;
 
-        value = (const gchar *) va_arg (args, gpointer);
+		value = (const gchar *) va_arg (args, gpointer);
 
-        lm_message_node_set_attribute (node, name, value);
-        
-    }
+		lm_message_node_set_attribute (node, name, value);
+		
+	}
 
-    va_end (args);
+	va_end (args);
 }
 
 /**
@@ -237,36 +231,36 @@ lm_message_node_set_attributes  (LmMessageNode *node,
  **/
 void
 lm_message_node_set_attribute (LmMessageNode *node,
-                               const gchar   *name,
-                               const gchar   *value)
+			       const gchar   *name,
+			       const gchar   *value)
 {
-    gboolean  found = FALSE; 
-    GSList   *l;
+	gboolean  found = FALSE; 
+	GSList   *l;
 
-    g_return_if_fail (node != NULL);
-    g_return_if_fail (name != NULL);
-    g_return_if_fail (value != NULL);
+        g_return_if_fail (node != NULL);
+        g_return_if_fail (name != NULL);
+        g_return_if_fail (value != NULL);
 
-    for (l = node->attributes; l; l = l->next) {
-        KeyValuePair *kvp = (KeyValuePair *) l->data;
+	for (l = node->attributes; l; l = l->next) {
+		KeyValuePair *kvp = (KeyValuePair *) l->data;
                 
-        if (strcmp (kvp->key, name) == 0) {
-            g_free (kvp->value);
-            kvp->value = g_strdup (value);
-            found = TRUE;
-            break;
-        }
-    }
-    
-    if (!found) {
-        KeyValuePair *kvp;
-    
-        kvp = g_new0 (KeyValuePair, 1);                
-        kvp->key = g_strdup (name);
-        kvp->value = g_strdup (value);
-        
-        node->attributes = g_slist_prepend (node->attributes, kvp);
-    }
+		if (strcmp (kvp->key, name) == 0) {
+			g_free (kvp->value);
+			kvp->value = g_strdup (value);
+			found = TRUE;
+			break;
+		}
+	}
+	
+	if (!found) {
+		KeyValuePair *kvp;
+	
+		kvp = g_new0 (KeyValuePair, 1);                
+		kvp->key = g_strdup (name);
+		kvp->value = g_strdup (value);
+		
+		node->attributes = g_slist_prepend (node->attributes, kvp);
+	}
 }
 
 /**
@@ -281,21 +275,21 @@ lm_message_node_set_attribute (LmMessageNode *node,
 const gchar *
 lm_message_node_get_attribute (LmMessageNode *node, const gchar *name)
 {
-    GSList      *l;
-    const gchar *ret_val = NULL;
+        GSList      *l;
+        const gchar *ret_val = NULL;
 
-    g_return_val_if_fail (node != NULL, NULL);
-    g_return_val_if_fail (name != NULL, NULL);
+        g_return_val_if_fail (node != NULL, NULL);
+        g_return_val_if_fail (name != NULL, NULL);
 
-    for (l = node->attributes; l; l = l->next) {
-        KeyValuePair *kvp = (KeyValuePair *) l->data;
+        for (l = node->attributes; l; l = l->next) {
+                KeyValuePair *kvp = (KeyValuePair *) l->data;
                 
-        if (strcmp (kvp->key, name) == 0) {
-            ret_val = kvp->value;
+                if (strcmp (kvp->key, name) == 0) {
+                        ret_val = kvp->value;
+                }
         }
-    }
         
-    return ret_val;
+        return ret_val;
 }
 
 /**
@@ -311,18 +305,18 @@ lm_message_node_get_attribute (LmMessageNode *node, const gchar *name)
 LmMessageNode *
 lm_message_node_get_child (LmMessageNode *node, const gchar *child_name)
 {
-    LmMessageNode *l;
+	LmMessageNode *l;
 
-    g_return_val_if_fail (node != NULL, NULL);
-    g_return_val_if_fail (child_name != NULL, NULL);
+        g_return_val_if_fail (node != NULL, NULL);
+        g_return_val_if_fail (child_name != NULL, NULL);
 
-    for (l = node->children; l; l = l->next) {
-        if (strcmp (l->name, child_name) == 0) {
-            return l;
-        }
-    }
+	for (l = node->children; l; l = l->next) {
+		if (strcmp (l->name, child_name) == 0) {
+			return l;
+		}
+	}
 
-    return NULL;
+	return NULL;
 }
 
 /**
@@ -337,27 +331,27 @@ lm_message_node_get_child (LmMessageNode *node, const gchar *child_name)
  **/
 LmMessageNode * 
 lm_message_node_find_child (LmMessageNode *node,
-                            const gchar   *child_name)
+			    const gchar   *child_name)
 {
-    LmMessageNode *l;
-    LmMessageNode *ret_val = NULL;
+        LmMessageNode *l;
+        LmMessageNode *ret_val = NULL;
 
-    g_return_val_if_fail (node != NULL, NULL);
-    g_return_val_if_fail (child_name != NULL, NULL);
+        g_return_val_if_fail (node != NULL, NULL);
+        g_return_val_if_fail (child_name != NULL, NULL);
 
-    for (l = node->children; l; l = l->next) {
-        if (strcmp (l->name, child_name) == 0) {
-            return l;
+        for (l = node->children; l; l = l->next) {
+                if (strcmp (l->name, child_name) == 0) {
+                        return l;
+                }
+                if (l->children) {
+                        ret_val = lm_message_node_find_child (l, child_name);
+                        if (ret_val) {
+                                return ret_val;
+                        }
+                }
         }
-        if (l->children) {
-            ret_val = lm_message_node_find_child (l, child_name);
-            if (ret_val) {
-                return ret_val;
-            }
-        }
-    }
 
-    return NULL;
+        return NULL;
 }
 
 /**
@@ -371,9 +365,9 @@ lm_message_node_find_child (LmMessageNode *node,
 gboolean
 lm_message_node_get_raw_mode (LmMessageNode *node)
 {
-    g_return_val_if_fail (node != NULL, FALSE);
+	g_return_val_if_fail (node != NULL, FALSE);
 
-    return node->raw_mode;
+	return node->raw_mode;
 }
 
 /** 
@@ -386,9 +380,9 @@ lm_message_node_get_raw_mode (LmMessageNode *node)
 void
 lm_message_node_set_raw_mode (LmMessageNode *node, gboolean raw_mode)
 {
-    g_return_if_fail (node != NULL);
+	g_return_if_fail (node != NULL);
 
-    node->raw_mode = raw_mode;  
+	node->raw_mode = raw_mode;	
 }
 
 /**
@@ -402,11 +396,11 @@ lm_message_node_set_raw_mode (LmMessageNode *node, gboolean raw_mode)
 LmMessageNode *
 lm_message_node_ref (LmMessageNode *node)
 {
-    g_return_val_if_fail (node != NULL, NULL);
-    
-    node->ref_count++;
+	g_return_val_if_fail (node != NULL, NULL);
+	
+	node->ref_count++;
        
-    return node;
+	return node;
 }
 
 /**
@@ -422,13 +416,13 @@ lm_message_node_ref (LmMessageNode *node)
 void
 lm_message_node_unref (LmMessageNode *node)
 {
-    g_return_if_fail (node != NULL);
-    
-    node->ref_count--;
-    
-    if (node->ref_count == 0) {
-        message_node_free (node);
-    }
+	g_return_if_fail (node != NULL);
+	
+	node->ref_count--;
+	
+	if (node->ref_count == 0) {
+		message_node_free (node);
+	}
 }
 
 /**
@@ -444,58 +438,58 @@ lm_message_node_unref (LmMessageNode *node)
 gchar *
 lm_message_node_to_string (LmMessageNode *node)
 {
-    GString       *ret;
-    GSList        *l;
-    LmMessageNode *child;
+	GString       *ret;
+	GSList        *l;
+	LmMessageNode *child;
 
-    g_return_val_if_fail (node != NULL, NULL);
-    
-    if (node->name == NULL) {
-        return g_strdup ("");
-    }
-    
-    ret = g_string_new ("<");
-    g_string_append (ret, node->name);
-    
-    for (l = node->attributes; l; l = l->next) {
-        KeyValuePair *kvp = (KeyValuePair *) l->data;
+	g_return_val_if_fail (node != NULL, NULL);
+	
+	if (node->name == NULL) {
+		return g_strdup ("");
+	}
+	
+	ret = g_string_new ("<");
+	g_string_append (ret, node->name);
+	
+	for (l = node->attributes; l; l = l->next) {
+		KeyValuePair *kvp = (KeyValuePair *) l->data;
 
-        if (node->raw_mode == FALSE) {
-            gchar *escaped;
+		if (node->raw_mode == FALSE) {
+			gchar *escaped;
 
-            escaped = g_markup_escape_text (kvp->value, -1);
-            g_string_append_printf (ret, " %s=\"%s\"", 
-                                    kvp->key, escaped);
-            g_free (escaped);
-        } else {
-            g_string_append_printf (ret, " %s=\"%s\"", 
-                                    kvp->key, kvp->value);
-        }
-        
-    }
-    
-    g_string_append_c (ret, '>');
-    
-    if (node->value) {
-        gchar *tmp;
+			escaped = g_markup_escape_text (kvp->value, -1);
+			g_string_append_printf (ret, " %s=\"%s\"", 
+						kvp->key, escaped);
+			g_free (escaped);
+		} else {
+			g_string_append_printf (ret, " %s=\"%s\"", 
+						kvp->key, kvp->value);
+		}
+		
+	}
+	
+	g_string_append_c (ret, '>');
+	
+	if (node->value) {
+		gchar *tmp;
 
-        if (node->raw_mode == FALSE) {
-            tmp = g_markup_escape_text (node->value, -1);
-            g_string_append (ret,  tmp);
-            g_free (tmp);
-        } else {
-            g_string_append (ret, node->value);
-        }
-    } 
+		if (node->raw_mode == FALSE) {
+			tmp = g_markup_escape_text (node->value, -1);
+			g_string_append (ret,  tmp);
+			g_free (tmp);
+		} else {
+			g_string_append (ret, node->value);
+		}
+	} 
 
-    for (child = node->children; child; child = child->next) {
-        gchar *child_str = lm_message_node_to_string (child);
-        g_string_append_c (ret, ' ');
-        g_string_append (ret, child_str);
-        g_free (child_str);
-    }
+	for (child = node->children; child; child = child->next) {
+		gchar *child_str = lm_message_node_to_string (child);
+		g_string_append_c (ret, ' ');
+		g_string_append (ret, child_str);
+		g_free (child_str);
+	}
 
-    g_string_append_printf (ret, "</%s>\n", node->name);
-    
-    return g_string_free (ret, FALSE);
+	g_string_append_printf (ret, "</%s>\n", node->name);
+	
+	return g_string_free (ret, FALSE);
 }

@@ -1,4 +1,4 @@
-/* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
+/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
  * Copyright (C) 2003-2006 Imendio AB
  *
@@ -24,45 +24,45 @@
 #include <glib.h>
 
 LmSSLResponse   _lm_ssl_func_always_continue (LmSSL       *ssl,
-                                              LmSSLStatus  status,
-                                              gpointer     user_data);
+					      LmSSLStatus  status,
+					      gpointer     user_data);
 LmSSL *          _lm_ssl_new              (const gchar    *expected_fingerprint,
-                                           LmSSLFunction   ssl_function,
-                                           gpointer        user_data,
-                                           GDestroyNotify  notify);
+					   LmSSLFunction   ssl_function,
+					   gpointer        user_data,
+					   GDestroyNotify  notify);
 
 void             _lm_ssl_initialize       (LmSSL            *ssl);
 gboolean         _lm_ssl_begin            (LmSSL            *ssl,
-                                           gint              fd,
-                                           const gchar      *server,
-                                           GError          **error);
+					   gint              fd,
+					   const gchar      *server,
+					   GError          **error);
 GIOStatus        _lm_ssl_read             (LmSSL            *ssl,
-                                           gchar            *buf,
-                                           gint              len,
-                                           gsize             *bytes_read);
+					   gchar            *buf,
+					   gint              len,
+					   gsize             *bytes_read);
 gint             _lm_ssl_send             (LmSSL            *ssl,
-                                           const gchar      *str,
-                                           gint              len);
+					   const gchar      *str,
+					   gint              len);
 void             _lm_ssl_close            (LmSSL            *ssl);
 void             _lm_ssl_free             (LmSSL            *ssl);
 
 LmSSL *          _lm_ssl_new              (const gchar    *expected_fingerprint,
-                                           LmSSLFunction   ssl_function,
-                                           gpointer        user_data,
-                                           GDestroyNotify  notify);
+					   LmSSLFunction   ssl_function,
+					   gpointer        user_data,
+					   GDestroyNotify  notify);
 
 void             _lm_ssl_initialize       (LmSSL            *ssl);
 gboolean         _lm_ssl_begin            (LmSSL            *ssl,
-                                           gint              fd,
-                                           const gchar      *server,
-                                           GError          **error);
+					   gint              fd,
+					   const gchar      *server,
+					   GError          **error);
 GIOStatus        _lm_ssl_read             (LmSSL            *ssl,
-                                           gchar            *buf,
-                                           gint              len,
-                                           gsize             *bytes_read);
+					   gchar            *buf,
+					   gint              len,
+					   gsize             *bytes_read);
 gint             _lm_ssl_send             (LmSSL            *ssl,
-                                           const gchar      *str,
-                                           gint              len);
+					   const gchar      *str,
+					   gint              len);
 void             _lm_ssl_close            (LmSSL            *ssl);
 void             _lm_ssl_free             (LmSSL            *ssl);
 

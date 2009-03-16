@@ -1,4 +1,4 @@
-/* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
+/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
  * Copyright (C) 2003 Imendio AB
  *
@@ -18,25 +18,17 @@
  * Boston, MA 02111-1307, USA.
  */
 
-/**
- * SECTION:lm-message-handler
- * @Title: LmMessageHandler
- * @Short_description: A handler for incoming messages.
- * 
- *  A handler can be registered to listen to incoming messages with lm_connection_register_message_handler(). When a message is recieved the handlers of the correct type will be called.
- */
-
 #include <config.h>
 
 #include "lm-internals.h"
 #include "lm-message-handler.h"
 
 struct LmMessageHandler {
-    gboolean                valid;
-    gint                    ref_count;
-    LmHandleMessageFunction function;
-    gpointer                user_data;
-    GDestroyNotify          notify;
+	gboolean                valid;
+        gint                    ref_count;
+        LmHandleMessageFunction function;
+        gpointer                user_data;
+        GDestroyNotify          notify;
 };
 
 LmHandlerResult 
@@ -44,19 +36,19 @@ _lm_message_handler_handle_message (LmMessageHandler *handler,
                                     LmConnection     *connection,
                                     LmMessage        *message)
 {
-    g_return_val_if_fail (handler != NULL, 
+        g_return_val_if_fail (handler != NULL, 
                           LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS);
 
-    if (!handler->valid) {
+	if (!handler->valid) {
+		return LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS;
+	}
+        
+        if (handler->function) {
+                return (* handler->function) (handler, connection, 
+                                              message, handler->user_data);
+        }
+        
         return LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS;
-    }
-        
-    if (handler->function) {
-        return (* handler->function) (handler, connection, 
-                                      message, handler->user_data);
-    }
-        
-    return LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS;
 }
 
 /**
@@ -78,23 +70,23 @@ lm_message_handler_new (LmHandleMessageFunction function,
                         gpointer                user_data,
                         GDestroyNotify          notify)
 {
-    LmMessageHandler *handler;
+        LmMessageHandler *handler;
 
-    g_return_val_if_fail (function != NULL, NULL);
+	g_return_val_if_fail (function != NULL, NULL);
         
-    handler = g_new0 (LmMessageHandler, 1);
+        handler = g_new0 (LmMessageHandler, 1);
         
-    if (handler == NULL) {
-        return NULL;
-    }
+        if (handler == NULL) {
+                return NULL;
+        }
         
-    handler->valid     = TRUE;  
-    handler->ref_count = 1;
-    handler->function  = function;
-    handler->user_data = user_data;
-    handler->notify    = notify;
+	handler->valid     = TRUE;	
+        handler->ref_count = 1;
+        handler->function  = function;
+        handler->user_data = user_data;
+        handler->notify    = notify;
         
-    return handler;
+        return handler;
 }
 
 /**
@@ -106,7 +98,7 @@ lm_message_handler_new (LmHandleMessageFunction function,
 void
 lm_message_handler_invalidate (LmMessageHandler *handler)
 {
-    handler->valid = FALSE;
+	handler->valid = FALSE;
 }
 
 /**
@@ -120,9 +112,9 @@ lm_message_handler_invalidate (LmMessageHandler *handler)
 gboolean
 lm_message_handler_is_valid (LmMessageHandler *handler)
 {
-    g_return_val_if_fail (handler != NULL, FALSE);
+	g_return_val_if_fail (handler != NULL, FALSE);
 
-    return handler->valid;
+	return handler->valid;
 }
 
 /**
@@ -136,11 +128,11 @@ lm_message_handler_is_valid (LmMessageHandler *handler)
 LmMessageHandler *
 lm_message_handler_ref (LmMessageHandler *handler)
 {
-    g_return_val_if_fail (handler != NULL, NULL);
+        g_return_val_if_fail (handler != NULL, NULL);
         
-    handler->ref_count++;
+        handler->ref_count++;
 
-    return handler;
+        return handler;
 }
 
 /**
@@ -153,15 +145,15 @@ lm_message_handler_ref (LmMessageHandler *handler)
 void
 lm_message_handler_unref (LmMessageHandler *handler)
 {
-    g_return_if_fail (handler != NULL);
+        g_return_if_fail (handler != NULL);
         
-    handler->ref_count --;
+        handler->ref_count --;
         
-    if (handler->ref_count == 0) {
-        if (handler->notify) {
-            (* handler->notify) (handler->user_data);
+        if (handler->ref_count == 0) {
+                if (handler->notify) {
+                        (* handler->notify) (handler->user_data);
+                }
+                g_free (handler);
         }
-        g_free (handler);
-    }
 }
 
