@@ -35,8 +35,12 @@
 #include <arpa/nameser_compat.h>
 #endif
 
+#include <glib.h>
+
+#ifndef G_OS_WIN32
 #include <arpa/nameser.h>
 #include <resolv.h>
+#endif
 
 #include "lm-debug.h"
 #include "lm-error.h"
