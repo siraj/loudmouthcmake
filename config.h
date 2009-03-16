@@ -59,12 +59,3 @@
 
 /* Version number of package */
 #undef VERSION
-
-
-#define HAVE_SSL
-//#define HAVE_GNUTLS
-//#undef HAVE_SSL
-
-#define HAVE_OPENSSL
-//#define HAVE_ASYNCNS
-//#undef G_OS_WIN32

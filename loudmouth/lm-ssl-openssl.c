@@ -23,8 +23,10 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <unistd.h>
 #include <glib.h>
+#ifndef G_OS_WIN32
+#include <unistd.h>
+#endif
 
 #include "lm-debug.h"
 #include "lm-error.h"

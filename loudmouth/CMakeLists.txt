@@ -28,13 +28,20 @@ SET (loudmouthsrc
 		 lm-socket.c
 		 lm-parser.c
 		 lm-sasl.c
-		 lm-message.c)
+		 lm-message.c
+		 lm-debug.c 
+		 lm-connection.c
+		 lm-ssl-openssl.c 
+		 lm-old-socket.c)
 
 
 # Define include dirs
 # ===================
 set(LOUDMOUTH_INCLUDE_DIR ${CMAKE_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/loudmouth)
-include_directories(${LOUDMOUTH_INCLUDE_DIR} ${GLIBWIN32_INCLUDE_DIR} ${OPENSSL_INCLUDE_DIR})
+include_directories(${LOUDMOUTH_INCLUDE_DIR} 
+	            ${GLIBWIN32_INCLUDE_DIR} 
+		    ${OPENSSL_INCLUDE_DIR}
+		    ${EXTRA_INCLUDE_DIR})
 
 # Define link dirs
 # ================
@@ -42,7 +49,7 @@ link_directories(${OPENSLL_LINK_DIRECTORIES})
 
 # Define the project
 # ==================
-add_library(loudmouth ${loudmouthsrc})
+add_library(loudmouth SHARED ${loudmouthsrc})
 #set_target_properties(loudmouth PROPERTIES ${VERSION}) 
 set_target_properties(loudmouth PROPERTIES PROJECT_LABEL "Loudmouth")
 set_target_properties(loudmouth PROPERTIES LIBRARY_OUTPUT_DIRECTORY "bin")

@@ -77,9 +77,11 @@
 #include <netinet/in.h>
 #endif
 
+#include <glib.h>
+#ifndef G_OS_WIN32
 #include <arpa/nameser.h>
 #include <resolv.h>
-
+#endif
 #include <glib-object.h>
 
 #include "lm-data-objects.h"
