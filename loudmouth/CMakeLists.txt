@@ -66,5 +66,9 @@ add_library(loudmouth SHARED ${loudmouthsrc})
 #set_target_properties(loudmouth PROPERTIES ${VERSION}) 
 set_target_properties(loudmouth PROPERTIES PROJECT_LABEL "Loudmouth")
 set_target_properties(loudmouth PROPERTIES LIBRARY_OUTPUT_DIRECTORY "bin")
-target_link_libraries(loudmouth ${GLIBWIN32_LIBRARIES} ${OPENSLL_LIBRARIES})
+target_link_libraries(loudmouth 
+	              ${GLIBWIN32_LIBRARIES} 
+		      ${OPENSLL_LIBRARIES}
+		      ws2_32.lib
+		      dnsapi.lib)
 add_definitions(-DLM_COMPILATION)
